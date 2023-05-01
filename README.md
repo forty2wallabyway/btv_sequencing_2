@@ -1,1 +1,1 @@
-# btv_seq_pipeline_2
+# btv_sequencing_2
