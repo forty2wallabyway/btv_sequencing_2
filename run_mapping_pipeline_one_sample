@@ -13,7 +13,7 @@
 # It works by mapping trimmed reads to a set of existing BTV reference sequences downloaded from Genbank
 # using bowtie2.  
 #
-# I then uses the identify_best_segments_from_sam script to identify the best matching existing reference
+# It then uses the identify_best_segments_from_sam script to identify the best matching existing reference
 # sequence, which is defined as the reference sequence with the most reads aligned to it.  
 # It does this for all 10 segments.
 #
@@ -36,10 +36,13 @@
 
 sample_id=$1
 
+# run initial FastQC on input data
+fastqc ${sample_id}_R1.fastq ${sample_id}_R2.fastq
+
 # run "pre-procesing" script -> will trim low qual seqs and collapse to unique reads
 ./run_preprocessing_pipeline_one_sample $sample_id
 
-# post filtering file names
+# post filtering file names (fu = filtered/unique)
 fastq_r1=${sample_id}_R1_fu.fastq
 fastq_r2=${sample_id}_R2_fu.fastq
 
@@ -49,6 +52,9 @@ fastqc $fastq_r1 $fastq_r2
 # bowtie remaining data against set of BTV ref seqs
 bowtie2-build btv_refseq.fasta btv_index
 ./run_bt_align_paired $fastq_r1 $fastq_r2 btv_index
+
+# run mosdepth
+mosdepth ${sample_id}.mosdepth.summary.txt ${sample_id}_R1_fu.fastq.btv_index.paired_sorted.bam
 
 # extract new fasta file containing best aligned-to seqs for this dataset
 ./identify_best_segments_from_sam btv_refseq.fasta ${fastq_r1}.btv_index.paired.sam > ${sample_id}_best_10_refseq.fa
@@ -99,5 +105,5 @@ bowtie2-build ${sample_id}_new_draft_seqs.fa ${sample_id}_new_draft_seqs_index
 # re-bowtie data against best 10 BTV ref seqs
 ./run_bt_align_paired $fastq_r1 $fastq_r2 ${sample_id}_new_draft_seqs_index
 
-# generate MultiQC report of trimming and mapping results
+# generate MultiQC report
 multiqc .
