@@ -3,16 +3,9 @@
 This is a sloppy working notebook for changes made to the original "btv_sequencing" pipeline forked from the Stenglein lab at CSU. 
 
 Dependencies:
-- Bowtie2
-- Trimmomatic
-- Cd-Hit
-- Samtools
-- Bcftools
-- BTV Reference FASTA
-- FastQC
-- MultiQC
-- Mosdepth
-- Picard
+- QC Related: FastQC, MultiQC, Mosdepth, Picard
+- Analysis Related: Bowtie2, Trimmomatic, Cd-Hit, Samtools, Bcftools
+- Additionally Needed: BTV Reference FASTA
 
 4.19.23
 - Added MultiQC to conda env
@@ -33,6 +26,10 @@ Dependencies:
 - Tested CollectInsertSize and MarkDuplicates tools in Picard, recognition of MultiQC regarding these reports, and then adding these steps to the run_mapping script
 
 
-`java -jar picard.jar CollectInsertSizeMetrics -I 84_R1_fu.fastq.btv_index.paired_sorted.bam -O 84_insert_size_metrics.txt -H 84_insert_size_histogram.pdf -M 0.5`
+`java -jar /home/tsherman/picard/build/libs/picard.jar CollectInsertSizeMetrics -I 84_R1_fu.fastq.btv_index.paired_sorted.bam -O 84_insert_size_metrics.txt -H 84_insert_size_histogram.pdf -M 0.5`
 
 `java -jar /home/tsherman/picard/build/libs/picard.jar MarkDuplicates -I 84_R1_fu.fastq.btv_index.paired_sorted.bam -O 84_marked_duplicates.bam -M 84_marked_dup_metrics.txt`
+
+5.17.23
+- Added commands to run_mapping script to generate Picard metrics (insert size and mark duplicates) from sorted BAM files 
+- Added a few commands at the end of the run_mapping script to move all newly generated files into a new subdirectory
