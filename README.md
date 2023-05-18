@@ -25,11 +25,6 @@ Dependencies:
 - Installed and tested Picard tools to use for MarkDup and InsertSize metrics (all tests passed)
 - Tested CollectInsertSize and MarkDuplicates tools in Picard, recognition of MultiQC regarding these reports, and then adding these steps to the run_mapping script
 
-
-`java -jar /home/tsherman/picard/build/libs/picard.jar CollectInsertSizeMetrics -I 84_R1_fu.fastq.btv_index.paired_sorted.bam -O 84_insert_size_metrics.txt -H 84_insert_size_histogram.pdf -M 0.5`
-
-`java -jar /home/tsherman/picard/build/libs/picard.jar MarkDuplicates -I 84_R1_fu.fastq.btv_index.paired_sorted.bam -O 84_marked_duplicates.bam -M 84_marked_dup_metrics.txt`
-
 5.17.23
 - Added commands to run_mapping script to generate Picard metrics (insert size and mark duplicates) from sorted BAM files 
 - Added a few commands at the end of the run_mapping script to move all newly generated files into a new subdirectory
