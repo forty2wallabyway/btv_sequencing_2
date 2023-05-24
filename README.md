@@ -7,6 +7,8 @@ Dependencies:
 - Analysis Related: Bowtie2, Trimmomatic, Cd-Hit, Samtools, Bcftools
 - Additionally Needed: BTV Reference FASTA
 
+# MAKE SURE TO UPDATE LOCAL PATHS TO TRIMMOMATIC .jar FILES OR THIS PIPELINE WILL NOT WORK
+
 4.19.23
 - Added MultiQC to conda env
 - Added "2> ${file_base}.trimm.log" to preprocessing script in order to generate log file that can be used by MultiQC
@@ -28,3 +30,8 @@ Dependencies:
 5.17.23
 - Added commands to run_mapping script to generate Picard metrics (insert size and mark duplicates) from sorted BAM files 
 - Added a few commands at the end of the run_mapping script to move all newly generated files into a new subdirectory
+
+5.24.23
+- Started using simple_scheduler script to run consecutive samples
+- Changed Picard and Mosdepth metrics to collect from new best_10 BAM file (this dramatically changed mean coverage reported by Mosdepth) and moved to the end of run_mapping script
+ 

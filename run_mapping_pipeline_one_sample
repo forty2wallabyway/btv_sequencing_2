@@ -53,15 +53,6 @@ fastqc $fastq_r1 $fastq_r2
 bowtie2-build btv_refseq.fasta btv_index
 ./run_bt_align_paired $fastq_r1 $fastq_r2 btv_index
 
-# collect coverage metrics (mosdepth)
-mosdepth ${sample_id}.mosdepth.summary.txt ${sample_id}_R1_fu.fastq.btv_index.paired_sorted.bam
-
-# collect insert size metrics (picard)
-java -jar /home/tsherman/picard/build/libs/picard.jar CollectInsertSizeMetrics -I ${sample_id}_R1_fu.fastq.btv_index.paired_sorted.bam -O ${sample_id}_insert_size_metrics.txt -H ${sample_id}_insert_size_histogram.pdf -M 0.5 
-
-# collect duplicates metrics (picard)
-java -jar /home/tsherman/picard/build/libs/picard.jar MarkDuplicates -I ${sample_id}_R1_fu.fastq.btv_index.paired_sorted.bam -O ${sample_id}_marked_duplicates.bam -M ${sample_id}_marked_dup_metrics.txt
-
 # extract new fasta file containing best aligned-to seqs for this dataset
 ./identify_best_segments_from_sam btv_refseq.fasta ${fastq_r1}.btv_index.paired.sam > ${sample_id}_best_10_refseq.fa
 
@@ -110,6 +101,15 @@ bowtie2-build ${sample_id}_new_draft_seqs.fa ${sample_id}_new_draft_seqs_index
 
 # re-bowtie data against best 10 BTV ref seqs
 ./run_bt_align_paired $fastq_r1 $fastq_r2 ${sample_id}_new_draft_seqs_index
+
+# collect coverage metrics (mosdepth)
+mosdepth ${sample_id}.mosdepth.summary.txt ${sample_id}_R1_fu.fastq.10_best_10_index.paired_sorted.bam
+
+# collect insert size metrics (picard)
+java -jar /home/tsherman/picard/build/libs/picard.jar CollectInsertSizeMetrics -I ${sample_id}_R1_fu.fastq.10_best_10_index.paired_sorted.bam -O ${sample_id}_insert_size_metrics.txt -H ${sample_id}_insert_size_histogram.pdf -M 0.5 
+
+# collect duplicates metrics (picard)
+java -jar /home/tsherman/picard/build/libs/picard.jar MarkDuplicates -I ${sample_id}_R1_fu.fastq.10_best_10_index.paired_sorted.bam -O ${sample_id}_marked_duplicates.bam -M ${sample_id}_marked_dup_metrics.txt
 
 # generate MultiQC report
 multiqc .
