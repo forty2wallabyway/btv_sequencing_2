@@ -5,10 +5,10 @@
 #
 # It assumes as input Illumina paired end data in 2 files named like this:
 # 
-# <isolate_name>_R1.fastq
-# <isolate_name>_R2.fastq
+# <isolate_name>_R1.fastq.gz
+# <isolate_name>_R2.fastq.gz
 #
-# You pass in the <isolate_name> as a command line argument to the script
+# You pass in the <isolate_name> as a command line argument to the script.
 #
 # It works by mapping trimmed reads to a set of existing BTV reference sequences downloaded from Genbank
 # using bowtie2.  
@@ -37,7 +37,7 @@
 sample_id=$1
 
 # run initial FastQC on input data
-fastqc ${sample_id}_R1.fastq ${sample_id}_R2.fastq
+fastqc ${sample_id}_R1.fastq.gz ${sample_id}_R2.fastq.gz
 
 # run "pre-procesing" script -> will trim low qual seqs and collapse to unique reads
 ./run_preprocessing_pipeline_one_sample $sample_id
