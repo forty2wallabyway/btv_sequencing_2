@@ -1,6 +1,6 @@
 # btv_sequencing_2
 
-This is pipeline was forked from the Stenglein Lab at CSU. It was built for this purpose but has since been updated. 
+This is a modified version of the btv_sequencing pipeline from the Stenglein Lab at CSU. It was built for this purpose but has since been updated. 
 
 
 It is currently intended for use with paired-end, Illumina short-read sequences. In brief, it will:
